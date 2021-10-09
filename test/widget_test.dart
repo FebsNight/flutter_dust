@@ -6,25 +6,22 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dust/models/air_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_dust/main.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test('http 통신 테스트', () async {
+    var url = Uri.http('api.airvisual.com', '/v2/nearest_city', {'key' : '19858f4f-0b57-4859-8108-55dce347bca1'});
+    var response = await http.get(url);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // expect(response.statusCode, 200);
+    
+    AirResult result = AirResult.fromJson(convert.jsonDecode(response.body));
+    expect(result.status, 'success');
   });
 }
