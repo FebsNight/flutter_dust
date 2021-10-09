@@ -1,6 +1,6 @@
 # flutter_dust
 
-A new Flutter project.
+현재 위치 미세먼지 앱
 
 ## Getting Started
 
